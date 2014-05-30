@@ -1,0 +1,19 @@
+#!/bin/bash
+
+field(){
+while read data; do
+    echo ${data} | tr -s ' ' "\t" | cut -f $1
+done
+}
+
+if [ -z "$1" ]; then
+    PID=`ps ax | grep rsync | grep -v "grep rsync" | head -n 1 | field 1`
+else
+    PID=$1
+fi 
+
+FILE=`ls -la /proc/${PID}/fd/3 | field 11`
+SIZE=`ls -la ${FILE} | field 5`
+FP=`cat /proc/${PID}/fdinfo/3 | grep pos | field 2`
+
+echo "${FILE} :: ${FP} of ${SIZE}"
