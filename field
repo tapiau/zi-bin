@@ -1,1 +1,1 @@
-sed 's/ \+/\t/g' | cut -f $1
+sed 's/\s\+/\t/g' | cut -f $1
